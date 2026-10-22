@@ -11,6 +11,8 @@ export const Route = createFileRoute("/_authenticated/")({
       { name: "description", content: "Overview of library book loans and borrowers." },
       { property: "og:title", content: "Dashboard — BiblioTech" },
       { property: "og:description", content: "Overview of library book loans and borrowers." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,

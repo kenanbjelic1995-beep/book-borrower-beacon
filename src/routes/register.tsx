@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,12 +14,15 @@ export const Route = createFileRoute("/register")({
       { name: "description", content: "Create a librarian account for BiblioTech." },
       { property: "og:title", content: "Register — BiblioTech" },
       { property: "og:description", content: "Create a librarian account for BiblioTech." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Register,
 });
 
 function Register() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,13 +31,17 @@ function Register() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: window.location.origin },
     });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
+    if (data.session) {
+      navigate({ to: "/" });
+      return;
+    }
     setSent(true);
   }
 

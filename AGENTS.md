@@ -9,3 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Protected pages live under src/routes/_authenticated/ (client-only gate redirecting to /login); data access uses the browser client with RLS, since all signed-in librarians share the same records.
+- Application auth and database access must import src/lib/supabase.ts, which uses explicit external configuration and isolated auth storage; generated Cloud clients and bindings are not used by application flows. This keeps the user-owned instance independent of managed Cloud configuration.

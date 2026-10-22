@@ -11,6 +11,8 @@ export const Route = createFileRoute("/_authenticated/users/")({
       { name: "description", content: "All library users who have borrowed books." },
       { property: "og:title", content: "Users — BiblioTech" },
       { property: "og:description", content: "All library users who have borrowed books." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: UsersList,

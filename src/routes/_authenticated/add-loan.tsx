@@ -14,6 +14,8 @@ export const Route = createFileRoute("/_authenticated/add-loan")({
       { name: "description", content: "Record a new borrowed book." },
       { property: "og:title", content: "Add Loan — BiblioTech" },
       { property: "og:description", content: "Record a new borrowed book." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AddLoan,
