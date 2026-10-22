@@ -7,7 +7,8 @@ create table public.borrowers (
   id uuid primary key default gen_random_uuid(),
   first_name text not null,
   last_name text not null,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  unique (first_name, last_name)
 );
 grant select, insert, update, delete on public.borrowers to authenticated;
 grant all on public.borrowers to service_role;
@@ -18,7 +19,7 @@ create policy "Librarians manage borrowers" on public.borrowers
 
 create table public.loans (
   id uuid primary key default gen_random_uuid(),
-  borrower_id uuid not null references public.borrowers(id),
+  borrower_id uuid not null references public.borrowers(id) on delete cascade,
   user_full_name text not null,
   book_title text not null,
   borrow_date date not null default current_date,
