@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { formatDate, type Loan } from "@/lib/loans";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,8 @@ export const Route = createFileRoute("/_authenticated/users/$id")({
       { name: "description", content: "Books currently borrowed by this library user." },
       { property: "og:title", content: "User details — BiblioTech" },
       { property: "og:description", content: "Books currently borrowed by this library user." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: UserDetail,
