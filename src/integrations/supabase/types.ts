@@ -14,7 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      borrowers: {
+        Row: {
+          created_at: string
+          first_name: string
+          id: string
+          last_name: string
+        }
+        Insert: {
+          created_at?: string
+          first_name: string
+          id?: string
+          last_name: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+        }
+        Relationships: []
+      }
+      loans: {
+        Row: {
+          book_title: string
+          borrow_date: string
+          borrower_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          returned_at: string | null
+          user_full_name: string
+        }
+        Insert: {
+          book_title: string
+          borrow_date?: string
+          borrower_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          returned_at?: string | null
+          user_full_name: string
+        }
+        Update: {
+          book_title?: string
+          borrow_date?: string
+          borrower_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          returned_at?: string | null
+          user_full_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loans_borrower_id_fkey"
+            columns: ["borrower_id"]
+            isOneToOne: false
+            referencedRelation: "borrowers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
