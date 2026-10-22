@@ -40,7 +40,7 @@ function UserDetail() {
 
   async function markReturned(loanId: string) {
     const { error } = await supabase.from("loans").update({ returned_at: new Date().toISOString() }).eq("id", loanId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Marked as returned");
     qc.invalidateQueries();
   }
