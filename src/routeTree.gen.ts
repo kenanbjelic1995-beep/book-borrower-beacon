@@ -9,27 +9,174 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedAddLoanRouteImport } from './routes/_authenticated/add-loan'
+import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users.index'
+import { Route as AuthenticatedUsersIdRouteImport } from './routes/_authenticated/users.$id'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAddLoanRoute = AuthenticatedAddLoanRouteImport.update({
+  id: '/add-loan',
+  path: '/add-loan',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUsersIdRoute = AuthenticatedUsersIdRouteImport.update({
+  id: '/users/$id',
+  path: '/users/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/add-loan': typeof AuthenticatedAddLoanRoute
+  '/users/$id': typeof AuthenticatedUsersIdRoute
+  '/users/': typeof AuthenticatedUsersIndexRoute
+}
+export interface FileRoutesByTo {
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/add-loan': typeof AuthenticatedAddLoanRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/users/$id': typeof AuthenticatedUsersIdRoute
+  '/users': typeof AuthenticatedUsersIndexRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/_authenticated/add-loan': typeof AuthenticatedAddLoanRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/users/$id': typeof AuthenticatedUsersIdRoute
+  '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths:
+    '/' | '/login' | '/register' | '/add-loan' | '/users/$id' | '/users/'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/login' | '/register' | '/add-loan' | '/' | '/users/$id' | '/users'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/login'
+    | '/register'
+    | '/_authenticated/add-loan'
+    | '/_authenticated/'
+    | '/_authenticated/users/$id'
+    | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/add-loan': {
+      id: '/_authenticated/add-loan'
+      path: '/add-loan'
+      fullPath: '/add-loan'
+      preLoaderRoute: typeof AuthenticatedAddLoanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users/': {
+      id: '/_authenticated/users/'
+      path: '/users'
+      fullPath: '/users/'
+      preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users/$id': {
+      id: '/_authenticated/users/$id'
+      path: '/users/$id'
+      fullPath: '/users/$id'
+      preLoaderRoute: typeof AuthenticatedUsersIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+  }
+}
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAddLoanRoute: typeof AuthenticatedAddLoanRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedUsersIdRoute: typeof AuthenticatedUsersIdRoute
+  AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAddLoanRoute: AuthenticatedAddLoanRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedUsersIdRoute: AuthenticatedUsersIdRoute,
+  AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
